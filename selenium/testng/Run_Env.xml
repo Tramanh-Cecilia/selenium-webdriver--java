@@ -14,7 +14,11 @@
      </test> --> 
     <!--<class name="tiki.admin.Shopper_01_Product"/> lấy tên package. tên class-->
       	
-       <test name="Run on FireFox">
+     
+      <parameter name="environment" value= "live" />
+      
+      
+         <test name="Run on FireFox">
       <parameter name="browser" value= "firefox" />
      	 <classes>
       		<class name="testng.Topic_05_Parameter_Browser"/>

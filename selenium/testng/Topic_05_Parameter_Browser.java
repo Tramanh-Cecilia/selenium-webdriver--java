@@ -11,6 +11,7 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
@@ -27,7 +28,7 @@ public class Topic_05_Parameter_Browser {
 	
 	@Parameters("browser")
 	@BeforeClass
-	public void beforeClass(String browserName) {
+	public void beforeClass(@Optional("Firefox") String  browserName) {
 //		if (browserName.equals("firefox")) {
 //			System.setProperty("webdriver.gecko.driver", projectPath + "\\browserDrivers\\geckodriver.exe");
 //			driver = new FirefoxDriver();

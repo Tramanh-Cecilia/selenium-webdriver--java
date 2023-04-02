@@ -16,6 +16,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.Color;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -36,6 +37,7 @@ public class Topic_21_Page_Loading {
 	WebDriverWait explicitWait;
 	String projectPath = System.getProperty("user.dir");
 	String osName = System.getProperty("os.name");
+	Actions action;
 	JavascriptExecutor jsExecutor;
 	
 
@@ -56,7 +58,7 @@ public class Topic_21_Page_Loading {
 		driver.manage().window().maximize();
 		jsExecutor = (JavascriptExecutor) driver;
 		explicitWait = new WebDriverWait(driver,30);
-		
+		action = new Actions(driver);
 		
 		
 
@@ -93,18 +95,53 @@ public class Topic_21_Page_Loading {
 	
 
 	@Test
-	public void TC_02_Gofile() {
+	public void TC_02_NopCommerse() {
+		driver.get("https://admin-demo.nopcommerce.com/");
+		Assert.assertTrue(isPageLoadedSuccess());
+		explicitWait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button.button-1.login-button")));
+		driver.findElement(By.cssSelector("button.button-1.login-button")).click();
+		
+		WebElement ajax =driver.findElement(By.cssSelector("div#ajaxBusy"));
+		explicitWait.until(ExpectedConditions.invisibilityOf(ajax));
+		driver.findElement(By.xpath("//a[text()='Logout']")).click();
+		Assert.assertTrue(isPageLoadedSuccess());
+		String pageName= driver.findElement(By.cssSelector("div.page-title")).getText();
+		Assert.assertEquals(pageName, "Admin area demo");
 		
 		
 		
 	}
 	
-
+	@Test
+	public void TC_03_TestIO() {
+		driver.get("https://blog.testproject.io/");
+		// hover chuột vào heading
+		WebElement heading =driver.findElement(By.cssSelector("h1.main-heading.with-subheading"));
+		action.moveToElement(heading).perform();
+		Assert.assertTrue(isPageLoadedSuccess());
+		String keyword="Selenium";
+		driver.findElement(By.cssSelector("section#search-2 input.search-field")).sendKeys(keyword);
+		driver.findElement(By.cssSelector("section#search-2 span.glass")).click();
+		explicitWait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("h1.main-heading")));
+		Assert.assertTrue(isPageLoadedSuccess());
+		List<WebElement> seleniumHeadings =driver.findElements(By.cssSelector("h3.post-title"));
+		for (WebElement article : seleniumHeadings) {
+			Assert.assertTrue(article.getText().contains(keyword));
+			
+			
+		}
+	
+	
+	}
 	
 	
 	@AfterClass
 	public void afterClass() {
 //		driver.quit();
+	}
+	
+	public boolean waitforEjaxLoadingInvisible() {
+		return explicitWait.until(ExpectedConditions.invisibilityOfElementLocated(null));
 	}
 	
 	public boolean isPageLoadedSuccess() {

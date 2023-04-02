@@ -1,7 +1,5 @@
 package webdriver;
 
-import static org.testng.Assert.assertEquals;
-
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
